@@ -18,9 +18,6 @@
     };
     moment.locale('en');
 
-    var template = '<md-dialog class="dtp" layout="column" style="width: 300px;">' + '    <md-dialog-content class="dtp-content">' + '        <div class="dtp-date-view">' + '            <header class="dtp-header">' + '                <div class="dtp-actual-day" ng-show="picker.dateMode">{{picker.currentDate.format("dddd")}}</div>' + '                <div class="dtp-close text-right">' + '                    <a href="#" mdc-dtp-noclick ng-click="picker.hide()">&times;</a>' + '                </div>' + '            </header>' + '            <div class="dtp-date" ng-show="picker.params.date">' + '                <div layout="column">' + '                    <div class="dtp-actual-month">{{picker.currentDate.format("MMM") | uppercase}}</div>' + '                </div>' + '                <div class="dtp-actual-num">{{picker.currentDate.format("DD")}}</div>' + '                <div layout="column">' + '                    <div class="dtp-actual-year">{{picker.currentDate.format("YYYY")}}</div>' + '                </div>' + '            </div>' //start time
-        + '            <div class="dtp-time" ng-show="picker.params.time && !picker.params.date">' + '                <div class="dtp-actual-maxtime"><a href="#"  ng-class="{selected: picker.isHourOpen === true}" class="dtp-actual-hour" ng-click="picker.openHour()">{{picker.currentNearest5Minute().format("HH")}}</a>:<a href="#" ng-class="{selected: picker.isMinuteOpen === true}" class="dtp-actual-minute" ng-click="picker.openMinute()">{{picker.currentNearest5Minute().format("mm")}}</a></div>' + '            </div>' + '            <div class="dtp-picker">' + '                <mdc-datetime-picker-calendar date="picker.currentDate" picker="picker" class="dtp-picker-calendar" ng-show="picker.currentView === picker.VIEWS.DATE"></mdc-datetime-picker-calendar>' + '                <div class="dtp-picker-datetime" ng-show="picker.currentView !== picker.VIEWS.DATE">' + '                    <div class="dtp-actual-meridien">' + '                        <div class="left p20" ng-hide="picker.params.shortTime">' + '                            <a href="#" mdc-dtp-noclick class="dtp-meridien-am" ng-class="{selected: picker.meridien == \'AM\'}" ng-click="picker.selectAM()">AM</a>' + '                        </div>' + '                        <div ng-show="!picker.timeMode" class="dtp-actual-time p60"><a href="#"  ng-class="{selected: picker.isHourOpen === true}" class="dtp-actual-hour" ng-click="picker.openHour()">{{picker.currentNearest5Minute().format("HH")}}</a>:<a href="#" ng-class="{selected: picker.isMinuteOpen === true}" class="dtp-actual-minute" ng-click="picker.openMinute()">{{picker.currentNearest5Minute().format("mm")}}</a></div>' + '                        <div class="right p20" ng-hide="picker.params.shortTime">' + '                            <a href="#" mdc-dtp-noclick class="dtp-meridien-pm" ng-class="{selected: picker.meridien == \'PM\'}" ng-click="picker.selectPM()">PM</a>' + '                        </div>' + '                        <div class="clearfix"></div>' + '                    </div>' + '                    <mdc-datetime-picker-clock mode="hours" ng-if="picker.currentView === picker.VIEWS.HOUR"></mdc-datetime-picker-clock>' + '                    <mdc-datetime-picker-clock mode="minutes" ng-if="picker.currentView === picker.VIEWS.MINUTE"></mdc-datetime-picker-clock>' + '                </div>' + '            </div>' + '        </div>' + '    </md-dialog-content>' + '    <md-dialog-actions class="dtp-buttons">' + '            <md-button class="dtp-btn-cancel md-button" ng-click="picker.cancel()"> {{picker.params.cancelText}}</md-button>'+ '            <md-button class="dtp-btn-cancel md-button" ng-click="picker.back()"> {{picker.params.backText}}</md-button>' + '            <md-button class="dtp-btn-ok md-button" ng-click="picker.ok()"> {{picker.params.okText}}</md-button>' + '      </md-dialog-actions>' + '</md-dialog>';
-
     angular.module(moduleName, ['ngMaterial'])
         .directive('mdcDatetimePicker', ['$mdDialog',
             function($mdDialog) {
@@ -38,6 +35,7 @@
                         format: '@',
                         cancelText: '@',
                         backText: '@',
+                        nextText: '@',
                         okText: '@',
                         lang: '@',
                     },
@@ -54,6 +52,7 @@
                         }
                         scope.isHourOpen = false;
                         scope.isMinuteOpen = false;
+                        scope.isDateOpen = true;
 
                         if (angular.isString(scope.currentDate) && scope.currentDate !== '') {
                             scope.currentDate = moment(scope.currentDate, scope.format);
@@ -86,7 +85,7 @@
                                 options: options
                             };
                             $mdDialog.show({
-                                    template: template,
+                                    templateUrl: 'htmlTemplate/dateTimeTmp.html',
                                     controller: PluginController,
                                     controllerAs: 'picker',
                                     locals: locals,
@@ -129,6 +128,7 @@
             shortTime: false,
             cancelText: 'Cancel',
             okText: 'OK',
+            nextText: 'Next',
             backText: 'Back'
         };
 
@@ -182,18 +182,21 @@
             this.maxDate = _dateParam(this.params.maxDate);
             this.selectDate(this.currentDate);
         },
-        initDate: function(d) {
+        initDate: function() {
             this.currentView = VIEW_STATES.DATE;
+            this.isDateOpen = true;
             this.isHourOpen = false;
             this.isMinuteOpen = false;
         },
         initHours: function() {
             this.currentView = VIEW_STATES.HOUR;
+            this.isDateOpen = false;
             this.isHourOpen = true;
             this.isMinuteOpen = false;
         },
         initMinutes: function() {
             this.currentView = VIEW_STATES.MINUTE;
+            this.isDateOpen = false;
             this.isHourOpen = false;
             this.isMinuteOpen = true;
         },
@@ -404,6 +407,9 @@
         },
         openMinute: function() {
             this.initMinutes();
+        },
+        openDate: function() {
+            this.initDate();
         }
     };
 
@@ -413,8 +419,8 @@
             function() {
 
                 var startDate = moment(),
-                    YEAR_MIN = parseInt(startDate.format('YYYY'))-30,
-                    YEAR_MAX = parseInt(startDate.format('YYYY'))+70,
+                    YEAR_MIN = parseInt(startDate.format('YYYY')) - 30,
+                    YEAR_MAX = parseInt(startDate.format('YYYY')) + 70,
                     MONTHS_IN_ALL = (YEAR_MAX - YEAR_MIN + 1) * 12,
                     ITEM_HEIGHT = 240,
                     MONTHS = [];
@@ -694,20 +700,20 @@
                             var _mL = r / 1.5;
 
                             angular.element(element[0].querySelector('.dtp-hour-hand')).css({
-                                left: r + (mL * 1.5) + 'px',
+                                left: r + (mL * 1.5) - 10 + 'px',
                                 height: _hL + 'px',
-                                marginTop: (r - _hL - pL) + 'px'
+                                marginTop: (r - _hL - pL) - 2 + 'px'
                             }).addClass(!minuteMode ? 'on' : '');
 
                             angular.element(element[0].querySelector('.dtp-minute-hand')).css({
-                                left: r + (mL * 1.5) + 'px',
+                                left: r + (mL * 1.5) - 10 + 'px',
                                 height: _mL + 'px',
-                                marginTop: (r - _mL - pL) + 'px'
+                                marginTop: (r - _mL - pL) - 2 + 'px'
                             }).addClass(minuteMode ? 'on' : '');
 
                             angular.element(clockCenter).css({
                                 left: (r + pL + mL - centerWidth) + 'px',
-                                marginTop: (r - (mL / 2)) - centerHeight + 'px'
+                                marginTop: (r - (mL / 2)) - centerHeight + 7 + 'px'
                             });
                             animateHands();
                         };
@@ -738,6 +744,9 @@
                                 if (date.hour() == '0') {
                                     scope.currentValue = 24;
                                 }
+                                if( minuteMode && date.minute() == '0') {
+                                    scope.currentValue = 0;
+                                }
                             }
                         };
 
@@ -756,7 +765,7 @@
 
                             if (!minuteMode) {
                                 if (picker.params.shortTime) {
-                                    if(val === 24) {
+                                    if (val === 24) {
                                         val = 0;
                                     }
                                     picker.currentDate.hour(val);

@@ -1,0 +1,52 @@
+<md-dialog class="dtp" layout="column" style="width: 300px;">
+    <md-dialog-content class="dtp-content">
+        <div class="dtp-date-view">
+            <header class="dtp-header">
+                <div class="dtp-actual-day" ng-show="picker.dateMode">{{picker.currentDate.format("dddd")}}</div>
+                <div class="dtp-actual-day" ng-show="!picker.dateMode">&nbsp;</div>
+                <div class="dtp-close text-right"> <a href="#" mdc-dtp-noclick ng-click="picker.hide()">&times;</a> </div>
+            </header>
+            <div layout="row">
+                <div class="dtp-date" ng-show="picker.params.date" flex ng-click="picker.openDate()" ng-class="{selected: picker.isDateOpen === true}">
+                    <div layout="column">
+                        <div class="dtp-actual-month">{{picker.currentDate.format("MMM") | uppercase}}</div>
+                    </div>
+                    <div class="dtp-actual-num">
+                        <span>{{picker.currentDate.format("DD")}}</span>
+                    </div>
+                    <div layout="column">
+                        <div class="dtp-actual-year">{{picker.currentDate.format("YYYY")}}</div>
+                    </div>
+                </div>
+                <div class="dtp-time" ng-show="picker.params.time && !picker.params.date" flex>
+                    <div class="dtp-actual-maxtime" ng-class="">
+                        <a ng-class="{selected: picker.isHourOpen === true}" class="dtp-actual-hour" ng-click="picker.openHour()">{{picker.currentNearest5Minute().format("HH")}}</a>:<a href="#" ng-class="{selected: picker.isMinuteOpen === true}" class="dtp-actual-minute" ng-click="picker.openMinute()">{{picker.currentNearest5Minute().format("mm")}}</a>
+                    </div>
+                </div>
+                <div class="dtp-date-time" ng-show="picker.params.time && picker.params.date" flex>
+                    <div class="dtp-actual-maxtime">
+                        <div layout="column"><a href="#" ng-class="{selected: picker.isHourOpen === true}" class="dtp-actual-hour" ng-click="picker.openHour()">{{picker.currentNearest5Minute().format("HH")}} h</a></div>
+                        <div layout="column"><a href="#" ng-class="{selected: picker.isMinuteOpen === true}" class="dtp-actual-minute" ng-click="picker.openMinute()">{{picker.currentNearest5Minute().format("mm")}} min</a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="dtp-picker">
+                <mdc-datetime-picker-calendar date="picker.currentDate" picker="picker" class="dtp-picker-calendar" ng-show="picker.currentView === picker.VIEWS.DATE"></mdc-datetime-picker-calendar>
+                <div class="dtp-picker-datetime" ng-show="picker.currentView !== picker.VIEWS.DATE">
+                    <div class="dtp-actual-meridien">
+                        <div class="left p20" ng-hide="picker.params.shortTime"> <a href="#" mdc-dtp-noclick class="dtp-meridien-am" ng-class="{selected: picker.meridien == \'AM\'}" ng-click="picker.selectAM()">AM</a> </div>
+                        <div class="right p20" ng-hide="picker.params.shortTime"> <a href="#" mdc-dtp-noclick class="dtp-meridien-pm" ng-class="{selected: picker.meridien == \'PM\'}" ng-click="picker.selectPM()">PM</a> </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <mdc-datetime-picker-clock mode="hours" ng-if="picker.currentView === picker.VIEWS.HOUR"></mdc-datetime-picker-clock>
+                    <mdc-datetime-picker-clock mode="minutes" ng-if="picker.currentView === picker.VIEWS.MINUTE"></mdc-datetime-picker-clock>
+                </div>
+            </div>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions class="dtp-buttons">
+        <!--<md-button class="dtp-btn-cancel md-button" ng-click="picker.cancel()"> {{picker.params.cancelText}}</md-button>-->
+        <md-button class="dtp-btn-cancel md-button" ng-hide="picker.currentView == picker.VIEWS.DATE || (!picker.params.date && picker.currentView != picker.VIEWS.MINUTE)" ng-click="picker.back()"> {{picker.params.backText}}</md-button>
+        <md-button class="dtp-btn-ok md-button" ng-click="picker.ok()"> <div ng-hide="picker.currentView == picker.VIEWS.MINUTE">{{picker.params.nextText}}</div><div ng-hide="picker.currentView != picker.VIEWS.MINUTE">{{picker.params.okText}}</div></md-button>
+    </md-dialog-actions>
+</md-dialog>
