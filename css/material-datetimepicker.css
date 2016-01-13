@@ -52,6 +52,7 @@ md-dialog.dtp {
     text-align: center;
     color: rgba(0, 0, 0, 0.25);
     padding: 10px;
+    cursor: pointer;
 }
 .dtp div.dtp-actual-day {
     display: inline;
@@ -83,6 +84,7 @@ md-dialog.dtp {
     color: rgba(0, 0, 0, 0.25);
     text-decoration: none;
     font-size: smaller;
+    cursor: pointer;
 }
 
 .dtp-date.flex.selected {
@@ -93,6 +95,7 @@ md-dialog.dtp {
     color: rgba(0, 0, 0, 0.25);
     text-decoration: none;
     font-size: smaller;
+    cursor: pointer;
 }
 
 .dtp div.layout-row a.ng-binding.selected {
