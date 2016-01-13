@@ -45,7 +45,6 @@
         </div>
     </md-dialog-content>
     <md-dialog-actions class="dtp-buttons">
-        <!--<md-button class="dtp-btn-cancel md-button" ng-click="picker.cancel()"> {{picker.params.cancelText}}</md-button>-->
         <md-button class="dtp-btn-cancel md-button" ng-hide="picker.currentView == picker.VIEWS.DATE || (!picker.params.date && picker.currentView != picker.VIEWS.MINUTE)" ng-click="picker.back()"> {{picker.params.backText}}</md-button>
         <md-button class="dtp-btn-ok md-button" ng-click="picker.ok()"> <div ng-hide="picker.currentView == picker.VIEWS.MINUTE">{{picker.params.nextText}}</div><div ng-hide="picker.currentView != picker.VIEWS.MINUTE">{{picker.params.okText}}</div></md-button>
     </md-dialog-actions>

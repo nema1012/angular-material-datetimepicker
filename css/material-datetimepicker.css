@@ -50,7 +50,7 @@ md-dialog.dtp {
 .dtp div.dtp-date-time {
     background: #8BC34A;
     text-align: center;
-    color: #fff;
+    color: rgba(0, 0, 0, 0.25);
     padding: 10px;
 }
 .dtp div.dtp-actual-day {
@@ -80,23 +80,23 @@ md-dialog.dtp {
 }
 
 .dtp a.dtp-actual-hour {
-    color: #fff;
+    color: rgba(0, 0, 0, 0.25);
     text-decoration: none;
     font-size: smaller;
 }
 
 .dtp-date.flex.selected {
-    color: rgba(0, 0, 0, 0.25);
+    color: #fff;
 }
 
 .dtp a.dtp-actual-minute {
-    color: #fff;
+    color: rgba(0, 0, 0, 0.25);
     text-decoration: none;
     font-size: smaller;
 }
 
 .dtp div.layout-row a.ng-binding.selected {
-    color: rgba(0, 0, 0, 0.25);
+    color: #fff;
 }
 
 .dtp-actual-num.ng-binding.selected {
