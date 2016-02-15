@@ -149,6 +149,7 @@ md-dialog.dtp {
 .dtp .dtp-close > a {
     color: #fff;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .dtp .dtp-close > a > i {
