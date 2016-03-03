@@ -12,6 +12,7 @@
             $scope.dateTime = new Date();
             $scope.minDate = moment().subtract(1, 'month');
             $scope.maxDate = moment().add(1, 'month');
+            $scope.isoDate = '2016-02-15T07:39:44+01:00';
 
         })
 

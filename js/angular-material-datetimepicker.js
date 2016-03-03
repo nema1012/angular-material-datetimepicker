@@ -38,6 +38,7 @@
                         nextText: '@',
                         okText: '@',
                         lang: '@',
+                        inputFormat: '@'
                     },
                     link: function(scope, element, attrs, ngModel) {
                         var isOn = false;
@@ -55,7 +56,12 @@
                         scope.isDateOpen = true;
 
                         if (angular.isString(scope.currentDate) && scope.currentDate !== '') {
-                            scope.currentDate = moment(scope.currentDate, scope.format);
+                            if(scope.inputFormat) {
+                                scope.currentDate = moment(scope.currentDate, scope.inputFormat);
+                            }
+                            else {
+                              scope.currentDate = moment(scope.currentDate);
+                            }
                         }
 
                         if (ngModel) {
