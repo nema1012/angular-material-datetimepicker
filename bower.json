@@ -1,7 +1,7 @@
 {
   "name": "mn-angular-material-datetimepicker",
   "description": "A datetime picker for AngularJS Material",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "keywords": [
     "css",
     "js",
