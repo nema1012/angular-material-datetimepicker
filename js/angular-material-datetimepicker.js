@@ -57,10 +57,10 @@
 
                         if (angular.isString(scope.currentDate) && scope.currentDate !== '') {
                             if(scope.inputFormat) {
-                                scope.currentDate = moment(scope.currentDate, scope.inputFormat);
+                                scope.currentDate = moment(scope.currentDate, scope.inputFormat).toDate();
                             }
                             else {
-                              scope.currentDate = moment(scope.currentDate);
+                              scope.currentDate = moment(scope.currentDate).toDate();
                             }
                         }
 
