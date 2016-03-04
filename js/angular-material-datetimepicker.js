@@ -55,15 +55,6 @@
                         scope.isMinuteOpen = false;
                         scope.isDateOpen = true;
 
-                        if (angular.isString(scope.currentDate) && scope.currentDate !== '') {
-                            if(scope.inputFormat) {
-                                scope.currentDate = moment(scope.currentDate, scope.inputFormat).toDate();
-                            }
-                            else {
-                              scope.currentDate = moment(scope.currentDate).toDate();
-                            }
-                        }
-
                         if (ngModel) {
                             ngModel.$formatters.push(function(value) {
                                 var m = moment(value);
@@ -85,6 +76,18 @@
                                 if (scope.hasOwnProperty(i) && !angular.isUndefined(scope[i])) {
                                     options[i] = scope[i];
                                 }
+                            }
+                            if (angular.isString(scope.currentDate) && scope.currentDate !== '') {
+                                if(scope.inputFormat) {
+                                    scope.currentDate = moment(scope.currentDate, scope.inputFormat).toDate();
+                                }
+                                else {
+                                    scope.currentDate = moment(scope.currentDate).toDate();
+                                }
+                            }
+
+                            if(!scope.currentDate) {
+                                scope.currentDate  = new Date();
                             }
                             options.currentDate = scope.currentDate;
                             var locals = {
