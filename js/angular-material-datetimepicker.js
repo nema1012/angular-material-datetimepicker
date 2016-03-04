@@ -129,6 +129,7 @@
             date: true,
             time: true,
             format: 'YYYY-MM-DD',
+            inputFormat: null,
             minDate: null,
             maxDate: null,
             currentDate: null,
@@ -167,8 +168,8 @@
                 var ret = null;
                 if (angular.isDefined(input) && input !== null && input !== '') {
                     if (angular.isString(input)) {
-                        if (typeof(that.params.format) !== 'undefined' && that.params.format !== null) {
-                            ret = moment(input, that.params.format).locale(that.params.lang);
+                        if (typeof(that.params.inputFormat) !== 'undefined' && that.params.inputFormat !== null) {
+                            ret = moment(input, that.params.inputFormat).locale(that.params.lang);
                         } else {
                             ret = moment(input).locale(that.params.lang);
                         }
