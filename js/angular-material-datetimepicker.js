@@ -78,16 +78,16 @@
                                 }
                             }
                             if (angular.isString(scope.currentDate) && scope.currentDate !== '') {
-                                if(scope.inputFormat) {
+                                if (scope.inputFormat) {
                                     scope.currentDate = moment(scope.currentDate, scope.inputFormat).toDate();
-                                }
-                                else {
+                                } else {
                                     scope.currentDate = moment(scope.currentDate).toDate();
                                 }
                             }
+                            scope.oldDate = scope.currentDate;
 
-                            if(!scope.currentDate) {
-                                scope.currentDate  = new Date();
+                            if (!scope.currentDate) {
+                                scope.currentDate = new Date();
                             }
                             options.currentDate = scope.currentDate;
                             var locals = {
@@ -107,6 +107,10 @@
                                     scope.currentDate = v ? v._d : v;
                                     isOn = false;
                                 }, function() {
+                                    scope.currentDate = null;
+                                    if (scope.oldDate) {
+                                        scope.currentDate = scope.oldDate;
+                                    }
                                     isOn = false;
                                 });
                         });
@@ -754,7 +758,7 @@
                                 if (date.hour() == '0') {
                                     scope.currentValue = 24;
                                 }
-                                if( minuteMode && date.minute() == '0') {
+                                if (minuteMode && date.minute() == '0') {
                                     scope.currentValue = 0;
                                 }
                             }
